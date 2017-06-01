@@ -4,6 +4,6 @@ CREATE TABLE Hashtag (Tag varchar(139) NOT NULL PRIMARY KEY);
 CREATE TABLE Twittert ( TweetID int NOT NULL PRIMARY KEY, Handle varchar(140) NOT NULL);
 CREATE TABLE Erwähnt_account ( TweetID int NOT NULL, Handle varchar(140) NOT NULL, PRIMARY KEY (TweetID, Handle));
 CREATE TABLE Enthält (TweetID int NOT NULL, Tag varchar(139) NOT NULL, PRIMARY KEY (TweetID, Tag));
-CREATE TABLE Gemeinsam_getwittert_mit (Tag1 varchar(139), Tag2 varchar(139), PRIMARY KEY (Tag1, Tag2));
+CREATE TABLE Gemeinsam_getwittert_mit (Tag1 varchar(139), Tag2 varchar(139), TweetID int[], PRIMARY KEY (Tag1, Tag2));
 
  
