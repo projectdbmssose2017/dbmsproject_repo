@@ -1,6 +1,6 @@
-#eike sommer thomas sieron 
+#eike sommer thomas sieron christian kujath
 #databases sose 2017 tutorium nina kubiessa mi 14-16
-#project iteration2 aufgabe 4 / python
+#project iteration2 aufgabe 3 / python
 #quellen: stackoverflow, wiki.postgresql.org
 
 
