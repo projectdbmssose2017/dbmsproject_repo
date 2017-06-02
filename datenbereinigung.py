@@ -5,11 +5,11 @@
 import csv # learn more: https://python.org/pypi/csv Funktion zum Bearbeiten von CSV Dateien
 import operator #Funktionsmodul fuer standardoperatoren (e.g., add)
 #import pandas as pd #Funktionsmodul fuer rearrange und addnewcolumn
-print('Folgendermaßen sind die Attribute des Datensatzes american-election-tweets.csv (DB "Election") geordnet: (Spaltennummer) Spaltenname \n \n (0) TweetID, (1) handle, (2) text, (3) is_retweeted, (4) original_author, (5) time_date, (6) time_UTCtime, (7) retweet_count, (8) favorite_count, (9) source_url, (10) Len(word), (11) Account_Mention1, (12) Hashtag1, (n) HashtagN / Account_MentionN \n \n Hinweis: Die Spaltenanzahl variiert mit Anzahl der verlinkten Accounts und/oder benutzten Hashtags im Tweettext. \n')
+print('Folgendermassen sind die Attribute des Datensatzes american-election-tweets.csv (DB "Election") geordnet: (Spaltennummer) Spaltenname \n \n (0) TweetID, (1) handle, (2) text, (3) is_retweeted, (4) original_author, (5) time_date, (6) time_UTCtime, (7) retweet_count, (8) favorite_count, (9) source_url, (10) Len(word), (11) Account_Mention1, (12) Hashtag1, (n) HashtagN / Account_MentionN \n \n Hinweis: Die Spaltenanzahl variiert mit Anzahl der verlinkten Accounts und/oder benutzten Hashtags im Tweettext. \n')
 
 #DATAINTEGRITY
 #open('american-election-tweets.csv').read().index('\0')
-print("Test auf Datenintegrität:")
+print("Test auf Datenintegritaet:")
 if '\0' in open('american-election-tweets.csv').read():
     print ("Es befinden sich Null Bytes im Datensatz")
     reader = csv.reader(x.replace('\0', '') for x in 'american-election-tweets.csv')
