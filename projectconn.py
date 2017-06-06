@@ -1,4 +1,4 @@
-#eike sommer thomas sieron 
+#eike sommer thomas sieron christian kujath
 #databases sose 2017 tutorium nina kubiessa mi 14-16
 #project iteration2 aufgabe 4 / python
 #quellen: stackoverflow, wiki.postgresql.org, laurivan.com
@@ -20,10 +20,10 @@ except:
 cur = connect.cursor()
 
 
-#cur.execute("""INSERT INTO account (handle, benutzername)
-#		VALUES ('HillaryClinton', 'Hillary Clinton');""")			#fuellen table account
-#cur.execute("""INSERT INTO account (handle, benutzername)
-#		VALUES ('realDonaldTrump', 'Donald Trump');""")
+cur.execute("""INSERT INTO account (handle, benutzername)
+		VALUES ('HillaryClinton', 'Hillary Clinton');""")			#fuellen table account
+cur.execute("""INSERT INTO account (handle, benutzername)
+		VALUES ('realDonaldTrump', 'Donald Trump');""")
 
 cur.execute("""CREATE TABLE alles (tweetid int, handle varchar(16), text varchar(140), is_retweet varchar(16), original_author varchar (140), time varchar(20), in_reply_to_screenname varchar(140), is_quote_status varchar(16), retweet_count varchar(16), favorite_count varchar(16), source_url varchar(2000), truncated varchar(16));""") 			#anlegen einer hilfstabelle alles zum dateiauslesen
 						#beachte 12 spalten, alles strings
