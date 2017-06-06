@@ -1,20 +1,15 @@
 #eike sommer thomas sieron christian kujath
 #databases sose 2017 tutorium nina kubiessa mi 14-16
-#project iteration2 aufgabe 4 / python
+#project iteration2 aufgabe 3 / python
 #quellen: stackoverflow, wiki.postgresql.org, laurivan.com
-
 
 import csv
 import psycopg2
-
-
-
 
 try:
     connect = psycopg2.connect("dbname='election' user='postgres' host='localhost' password='dbmsproject'")
 except:
     print ("I am unable to connect to the database")
-
 
 
 cur = connect.cursor()
@@ -31,7 +26,6 @@ cur.execute("""CREATE TABLE alles (tweetid int, handle varchar(16), text varchar
 connect.commit()
 
 
-
 with open('/home/thomas/american-election-tweets-test.csv') as file:
 	reader = csv.reader(file, delimiter = ";")
 	counter=0
@@ -40,7 +34,6 @@ with open('/home/thomas/american-election-tweets-test.csv') as file:
 		cur.execute("""UPDATE alles SET tweetid = %s WHERE tweetid = 99999;""", (counter,))
 		counter=counter+1 
 		
-
 connect.commit()
 
 
@@ -52,20 +45,17 @@ cur.execute("""INSERT INTO tweet (tweetid, text, anzahlfavoriten, anzahlretweets
 
 cur.execute("""INSERT INTO enthaelt (tweetid) SELECT tweetid FROM alles WHERE is_quote_status='True';""")
 
-	
 
 """
 to_timestamp(time FROM alles,'YYYY-MM-DDThh24:mm:ss')::timestamp without time zone, CAST(favorite_count AS INT), CAST(retweet_count AS INT), source_url, CAST(is_retweet AS BOOLEAN), 
 
-platzhalter für alle 4 sachen noch aufloesen
+platzhalter fuer alle 4 sachen noch aufloesen
 
 --
 hashtags aus den tweets rausparsen und zuordnen???
 """					
 #cur.execute(INSERT INTO hashtag (tag) ;)
 #cur.execute("""INSERT INTO gemeinsam_getwittert_mit (tag1, tag2, tweetid) SELECT tweetid;""")
-
-
 
 connect.commit()
 
@@ -75,6 +65,3 @@ connect.commit()
 cur.close()
 connect.close()
 print("CSV data imported")
-
-
-
