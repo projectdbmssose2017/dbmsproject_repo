@@ -5,7 +5,7 @@
 import csv # learn more: https://python.org/pypi/csv Funktion zum Bearbeiten von CSV Dateien
 import operator #Funktionsmodul fuer standardoperatoren (e.g., add)
 import pandas as pd #import pandas as pd #Funktionsmodul fuer rearrange und addnewcolumn
-print('Folgendermaßen sind die Attribute des Datensatzes american-election-tweets.csv (DB "Election") geordnet: (Spaltennummer) Spaltenname \n \n (0) TweetID, (1) handle, (2) text, (3) is_retweeted, (4) original_author, (5) time_date, (6) time_UTCtime, (7) retweet_count, (8) favorite_count, (9) source_url, (10) Len(word), (11) Account_Mention1, (12) Hashtag1, (n) HashtagN / Account_MentionN \n \n Hinweis: Die Spaltenanzahl variiert mit Anzahl der verlinkten Accounts und/oder benutzten Hashtags im Tweettext. \n')
+print('Folgendermassen sind die Attribute des Datensatzes american-election-tweets.csv (DB "Election") geordnet: (Spaltennummer) Spaltenname \n \n (0) TweetID, (1) handle, (2) text, (3) is_retweeted, (4) original_author, (5) time_date, (6) time_UTCtime, (7) retweet_count, (8) favorite_count, (9) source_url, (10) Len(word), (11) Account_Mention1, (12) Hashtag1, (n) HashtagN / Account_MentionN \n \n Hinweis: Die Spaltenanzahl variiert mit Anzahl der verlinkten Accounts und/oder benutzten Hashtags im Tweettext. \n')
 
 #READER 
 #Hiermit wird der Datensatz eingelesen und angezeigt. 
@@ -22,13 +22,13 @@ print("Optimierte Darstellung:")
 print (pd.DataFrame(data, columns=Header)) #Wir lassen uns hiermit die DB ausgeben. Panda macht dies visuell ansprechend und sehr simple. Die Spalten werden definiert ueber die Header.
 
 #DATAINTEGRITY
-# Hier wird überprüft, ob es im Datensatz problematische Leerzeichen gibt. Dies wird über eine einfache if-Bedingung durchgeführt.
-print("Test auf Datenintegrität:")
+# Hier wird ueberprueft, ob es im Datensatz problematische Leerzeichen gibt. Dies wird ueber eine einfache if-Bedingung durchgefuehrt.
+print("Test auf Datenintegritaet:")
 if '\0' in open('american-election-tweets.csv').read():
     print ("Achtung, es befinden sich Null Bytes im Datensatz")
     reader = csv.reader(x.replace('\0', '') for x in 'american-election-tweets.csv') 
     #Oben wird der Null Value durch '' ersetzt. 
-else: #Falls sich keine Leerzeichen im DAtensatz befinden, wird die else-Bedingung durchgeführt.
+else: #Falls sich keine Leerzeichen im DAtensatz befinden, wird die else-Bedingung durchgefuehrt.
     print ("Es befinden sich keine (!) Null Bytes im Datensatz")
 #Desweiteren wollen wir in der Spalte original_author alle Leerzellen durch den Eintrag "false" ersetzen
 if '' in open('american-election-tweets.csv').read(r[3]):
