@@ -9,7 +9,7 @@ import csv
 
 with open('Id-Accounts-Hashtags-TextTEST.csv', 'wt', encoding="utf8", newline='') as outputFile:
     writer = csv.writer(outputFile, delimiter=";")
-    writer.writerow(('TweetID', 'Erwähnte Accounts', 'Hashtags', 'Text')) # the header
+    writer.writerow(('TweetID', 'Erwaehnte Accounts', 'Hashtags', 'Text')) # the header
     # american-election-tweets is sadly not in utf8 ?!? But it works this way, so...
     with open('american-election-tweets.csv', 'rt') as inputFile:
         reader = csv.reader(inputFile, delimiter=';')
