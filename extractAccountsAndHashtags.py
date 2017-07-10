@@ -26,7 +26,7 @@ with open('Id-Accounts-Hashtags-TextTEST.csv', 'wt', encoding="utf8", newline=''
             accountInds = [posi for (posi, chara) in enumerate(tweet) if chara == '@'] 
             tagInds = [posi for (posi, chara) in enumerate(tweet) if chara == '#']          
             # accounts and hashtags have no punctuation:
-            #endChars = (' ', '.', ':', ';', ',', '\'','-','?','!','´','’','\n','…','"')
+            #endChars = (' ', '.', ':', ';', ',', '\'','-','?','!','´','’','\n','"')
             # but now we just use .isalnum()
             
             # Now, find all account handles:
