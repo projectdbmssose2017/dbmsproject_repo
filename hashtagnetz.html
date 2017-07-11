@@ -1,0 +1,212 @@
+<!-- START SIGMA IMPORTS -->
+<script src="../src/sigma.core.js"></script>
+<script src="../src/conrad.js"></script>
+<script src="../src/utils/sigma.utils.js"></script>
+<script src="../src/utils/sigma.polyfills.js"></script>
+<script src="../src/sigma.settings.js"></script>
+<script src="../src/classes/sigma.classes.dispatcher.js"></script>
+<script src="../src/classes/sigma.classes.configurable.js"></script>
+<script src="../src/classes/sigma.classes.graph.js"></script>
+<script src="../src/classes/sigma.classes.camera.js"></script>
+<script src="../src/classes/sigma.classes.quad.js"></script>
+<script src="../src/classes/sigma.classes.edgequad.js"></script>
+<script src="../src/captors/sigma.captors.mouse.js"></script>
+<script src="../src/captors/sigma.captors.touch.js"></script>
+<script src="../src/renderers/sigma.renderers.canvas.js"></script>
+<script src="../src/renderers/sigma.renderers.webgl.js"></script>
+<script src="../src/renderers/sigma.renderers.svg.js"></script>
+<script src="../src/renderers/sigma.renderers.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.utils.js"></script>
+<script src="../src/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.curve.js"></script>
+<script src="../src/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="../src/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="../src/middlewares/sigma.middlewares.copy.js"></script>
+<script src="../src/misc/sigma.misc.animation.js"></script>
+<script src="../src/misc/sigma.misc.bindEvents.js"></script>
+<script src="../src/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="../src/misc/sigma.misc.drawHovers.js"></script>
+
+<!-- END SIGMA IMPORTS -->
+<div id="container">
+  <style>
+    #graph-container {
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      position: absolute;
+    }
+  </style>
+  <div id="graph-container"></div>
+</div>
+<script>
+var taglist = ['NationalVoterRegistrationDay' , 'VoterRegistrationDay' , 'MakeAmericaGreatAgain' , 'MAGA' , 'ImWithYou' , 'LoveTrumpsHate' , 'StrongerTogether' , 'Debates2016' , 'SheWon' , 'iRegistered' , 'AmericaFirst' , 'TrumpWon' , '1' , 'DebateNight' , 'debatenight' , 'ImWithHer' , 'Benghazi' , 'ISIS' , 'debate' , 'Debate' , 'TPP' , 'TrumpPence16' , 'Polls' , 'slipping' , 'TrumpTrain' , 'DeclareYourAmbition' , 'OpioidAwarenessWeek' , 'ADA' , 'imwithher' , 'CripTheVote' , 'TerenceCrutcher' , 'UNGA' , 'polls' , 'TheDonald' , 'JimmyFallon' , 'TheTonightShow' , 'MyTeacherIsWeird' , 'FallonTonight' , 'HispanicHeritageMonth' , 'LESM' , 'LibrarianOfCongress' , 'WeTrumpHate' , 'election2016' , 'POTUS' , 'CommanderInChiefForum' , 'NBCNewsForum' , 'media' , 'VoteTrump' , 'LaborDay' , 'ALConvention2016' , 'TrumpinEverett' , 'Obamacare' , 'RIP' , 'JuanGabriel' , 'DivoDeJuarez' , 'GoodTrouble' , 'TrumpPence2016' , 'NeverHillary' , 'BlackMenForBernie' , 'Hillary2016' , 'BlacksForTrump' , 'Enjoy' , 'WomensEqualityDay' , 'CrookedHillary' , 'FlashbackFriday' , 'NPS100' , 'brexit' , 'Hannity' , 'BuildTheWall' , 'MakeAmericaSafeAgain' , 'Diwali' , 'BlackWomensEqualPay' , 'LAflood' , 'smallbiz' , 'TeamTrump' , 'AlwaysTrump' , 'StandWithLouisiana' , 'WheresHillary' , 'WHD' , 'RosanellEaton' , 'LawandOrder' , 'DACA' , 'extremevetting' , 'USA' , 'YouthDay' , 'TBT' , 'ElectionDay' , '2A' , 'DefendtheSecond' , 'SCOTUS' , 'taxplan' , 'NeverTrump' , 'ICYMI' , 'PurpleHeartDay' , 'ImWithHernandez' , 'VirWINia' , 'sendDonaldtospace' , 'DemConvention' , 'RestoreTheVRA' , 'ugpride2016' , 'TeamUSA' , 'OpeningCeremony' , 'Rio2016' , 'NABJNAHJ16' , 'CoastGuardDay' , 'TrumpMovement' , 'VoterFraud' , 'MSM' , 'KhizrKhan' , 'Trump2016' , 'DemsInPhilly' , 'DNC' , 'NATO' , 'StopGunViolence' , 'enough' , 'LGBT' , 'Pulse' , 'DemsinPhilly' , 'DNCinPHL' , 'DemsInPHL' , 'WeMadeHistory' , 'RollCallVote' , 'DemsinPHL' , 'RNCinCLE' , 'HillaryKaine2016' , 'ClintonKaine' , 'RNCInCLE' , 'RNCwithBernie' , 'TrumpIsWithYou' , 'StandTogether' , 'TrumpYourself' , 'GOPinCLE' , 'GOPConvention' , 'RNCINCLE' , 'CitizensUnited' , 'AIDSFreeGeneration' , '60Minutes' , 'campaignfinance' , 'Turkey' , 'MikePence' , 'JuntosSePuede' , 'IranDeal' , 'fixdemocracyfirst' , 'FeelTheBern' , 'NAACP107' , 'WORK' , 'Orlando' , 'StoptheHate' , 'NeverForget' , 'Srebrenica' , 'Wimbledon' , 'PhilandoCastile' , 'Frozen' , 'FirstInPOTUS' , 'RiggedSystem' , 'LeadRight2016' , 'WCS16' , 'makersandtakers' , 'WakeUpAmerica' , 'CreatorsAskHRC' , 'UPUPUP' , 'Trump' , 'TurnUpToVote' , 'OHHillYes' , 'dtmag' , 'USMC2016' , 'NYCPride' , 'DemPlatform' , 'WestVirginia' , 'BrexitVote' , 'Brexit' , 'DemocraticSitIn' , 'imwithyou' , 'TitleIX' , 'Clinton' , 'Imwithyou' , 'NoBillNoBreak' , 'gunviolence' , 'sitin' , 'AsLongAsItTakes' , 'NoMoreSilence' , 'DisarmHate' , 'EndGunViolence' , 'NotOneMore' , 'holdthefloor' , 'goodtrouble' , 'Olmstead' , 'GIBill' , 'veterans' , 'MoreInCommon' , 'WorldRefugeeDay' , 'LaudatoSi' , 'Charleston9' , 'TrumpDallas' , 'ShesWithUs' , 'OrlandoUnited' , 'Enough' , 'Filibuster' , 'ArmyBDay' , 'NetNeutrality' , 'StanleyCup' , 'RTM2016' , 'WIBackHer' , 'HistoryMade' , 'CAPrimary' , 'DDay' , 'Decision2016' , 'Elkhart' , 'VoteTrump2016' , 'Women4Ttump' , 'TRUMP2016' , 'GunViolence' , 'SaveElephants' , 'Teachers4Trump' , 'CA4Trump' , 'NeverDems' , 'Caribbean' , 'UnderstandSlavery' , 'MemorialDay' , 'TRUMP' , 'MDW' , 'MeetTheTrumps' , 'SallyRideDay' , 'UAW' , 'ActOnClimate' , 'ArmedForcesDay' , 'MichaelBrown' , 'MothersoftheMovement' , 'ChangeAgents' , 'SecondAmendment' , 'SayHerName' , 'AmericaFIRST' , 'MegynKellyPresents' , 'ORPrimary' , 'MadeInAmerica' , 'InternationalNursesDay' , 'WashingtonDC' , 'Statehood' , 'RepMikeKelly' , 'NebraskaPrimary' , 'TrumpForPresident' , 'MattSchlapp' , 'jenniferrubin' , 'GOP' , 'MothersDay' , 'MadeForHistory' , 'KentuckyDerby' , 'CincoDeMayo' , 'SmallBizWeek' , 'ThanksObama' , 'TeacherAppreciationDay' , 'INPrimary' , 'APAHM' , 'WHCD' , 'FNS' , 'MayDay' , 'WomanCard' , 'HillaryOnCNN' , 'INDPrimary' , 'Indiana' , 'womancard' , 'EstoyConElla' , 'MSNBCTownhall' , 'CTPrimary' , 'DEPrimary' , 'MDPrimary' , 'PAPrimary' , 'RIPrimary' , 'NYPrimary' , 'EarthDay' , 'Prince' , 'HillaryClinton' , 'HillaryOnGMA' , 'Trump360' , 'PrimaryDay' , 'NewYorkValues' , 'VoteTrumpNY' , 'iVoted' , 'FightForFamilies' , 'EastVillage' , 'LSSC' , 'HoustonFlood' , 'HRC4PA' , 'presidenttrump' , 'primary' , 'trump2016' , 'MAKEAMERICAGREATAGAIN' , 'trump' , 'HaileyPuckett' , 'NewDay' , 'WIPrimary' , 'Wisconsin' , 'DonaldTrump' , 'VoteTrumpWI' , 'WISCONSIN' , 'Racine' , 'Wausau' , 'EauClaire' , 'JohnRyder' , 'WOMEN4TRUMP' , 'Derp' , 'LyingTed' , 'NeverCruz' , 'WesternTuesday' , 'UtahCaucus' , 'UTCaucus' , 'ArizonaPrimary' , 'AZPrimary' , 'AmericanSamoa' , 'Brussels' , 'Arizona' , 'AIPAC2016' , 'WattersWorld' , 'TrumpCountry' , 'Utah' , 'Mormon' , 'UtahPrimary' , 'Utah4Trump' , 'voteTrump' , 'AZ' , 'UT' , 'SuperTuesday' , 'CNN' , 'GO' , 'EndCommonCore' , 'GOPDebate' , 'Donald' , 'LightweightSenatorMarcoRubio' , 'TrumpWaikiki' , 'Mahalo' , 'Mediafraud' , 'MSPrimary' , 'TRUMPDOG' , 'SuperSaturday' , 'LittleMarco' , 'KansasCaucus' , 'CaucusForTrump' , 'VoteTrumpMI' , 'MorningJoe' , 'KenLangone' , 'NeilCavuto' , 'Fox' , 'OnTheRecord' , 'FAIL' , 'Politician' , 'NASCAR' , 'RobotRubio' , 'StopCommonCore' , 'RogerStone' , 'Greta' , 'LoneStarState' , 'MakeYoutubeGreatAgain' , 'NoLoyalty' , 'NVcaucus' , 'VoteTrumpNV' , 'NevadaCaucus' , 'TrumpLV' , 'TrumpNV' , 'VoteTrumpVT' , 'VoteTrumpNC' , 'VoteTrumpMA' , 'VoteTrumpIL' , 'BikersForTrump' , 'SCPrimary' , 'WATCH' , 'fairandbalancedmyass' , 'Ted' , 'SouthCarolina' , 'ObamaCare' , 'VoteTrumpSC' , 'vaticanwalls' , 'Colbert' , 'MaitnerStrong' , 'Ford' , 'Carrier' , 'Jobs' , 'Mexico' , 'SouthCarolinaPrimary' , 'FITN' , 'NHPrimary' , 'VoteTrumpNH' , 'CommonCore' , 'SuperBowlSunday' , 'SB50' , 'GPLFers' , 'TrumpSupporters' , 'NewHampshire' , 'NHPolitics' , 'VotersSpeak' , 'CruzFraud' , 'IACaucus' , 'ThankAVet' , 'Trump4Vets' , 'MichaelMoore' , 'FoxNews' , 'ROGERAILES' , 'Iowa' , 'YUGE' , 'GOPdebate' , 'IowaCaucus' , 'NewYork' , 'Jonas' , 'WeAreBernie' , 'WeWantTrump' , 'makeamericagreatagain' , 'With_Cruz_you_lose' , 'AmericaGreatAgain' , 'Excellent' , 'RNC' , 'MaryBrigidMcManamon' , 'CommonLaw' , 'NaturalBorn' , 'TedCruz' , 'Cruz' , 'laurencetribe' , 'LaurenceTribe' , 'ECONOMY' , 'CBNNews' , '2016' , 'HarveyPitt' , 'IAPolitics' , 'SOTU' , 'GoldenGlobe' , 'Laurence' , 'Rubio' , 'Bush' , 'DavidCameron' , 'WH' , 'Trump4President']
+
+var tagpaare = ['VoterRegistrationDay','MakeAmericaGreatAgain','Debates2016','NationalVoterRegistrationDay','AmericaFirst','MAGA','AmericaFirst','ImWithYou','MAGA',
+'ImWithYou','TrumpWon','MAGA','1','TrumpWon','DebateNight','AmericaFirst','DebateNight','ImWithYou','AmericaFirst','ImWithYou','DebateNight',
+'AmericaFirst','DebateNight','MAGA','AmericaFirst','MAGA','AmericaFirst','Debates2016','Debates2016','MAGA','Benghazi','Debates2016','Benghazi',
+'debatenight','Debates2016','debatenight','ISIS','DebateNight','Debates2016','MAGA','Debates2016','MAGA','TPP','Debates2016','DebateNight',
+'TrumpPence16','Polls','slipping','Polls','Debates2016','slipping','Debates2016','TrumpTrain','MAGA','TrumpTrain','MAGA','ADA','imwithher',
+'ADA','CripTheVote','imwithher','CripTheVote','AmericaFirst','MakeAmericaGreatAgain','AmericaFirst','MakeAmericaGreatAgain','ImWithYou',
+'AmericaFirst','TheDonald','JimmyFallon','TheDonald','TheTonightShow','TheDonald','TrumpPence16','JimmyFallon','TheTonightShow','JimmyFallon',
+'TrumpPence16','TheTonightShow','TrumpPence16','MyTeacherIsWeird','FallonTonight','LESM','MAGA','MAGA','AmericaFirst','ImWithYou','AmericaFirst',
+'AmericaFirst','MAGA','AmericaFirst','ImWithYou','ImWithYou','MAGA','AmericaFirst','TrumpTrain','AmericaFirst','ImWithYou','AmericaFirst','MAGA',
+'VoteTrump','MakeAmericaGreatAgain','VoteTrump','ImWithYou','LaborDay','AmericaFirst','MakeAmericaGreatAgain','ImWithYou','AmericaFirst','ImWithYou',
+'MakeAmericaGreatAgain','ImWithYou','MakeAmericaGreatAgain','ImWithYou','ImWithYou','AmericaFirst','RIP','JuanGabriel','RIP','DivoDeJuarez',
+'JuanGabriel','DivoDeJuarez','TrumpPence2016','NeverHillary','BlackMenForBernie','Hillary2016','BlackMenForBernie','BlacksForTrump','Hillary2016',
+'BlacksForTrump','AmericaFirst','TrumpPence16','brexit','MAGA','Hannity','BuildTheWall','AmericaFirst','ImWithYou','MAGA','TrumpPence16','MAGA',
+'AlwaysTrump','ImWithYou','TrumpTrain','MakeAmericaGreatAgain','ImWithYou','MakeAmericaGreatAgain','ImWithYou','LawandOrder','ImWithYou',
+'LawandOrder','ImWithYou','MakeAmericaGreatAgain','USA','ElectionDay','2A','ElectionDay','DefendtheSecond','ElectionDay','NeverHillary','2A',
+'DefendtheSecond','2A','NeverHillary','DefendtheSecond','NeverHillary','2A','SCOTUS','2A','NeverHillary','SCOTUS','NeverHillary','MAGA',
+'NeverHillary','taxplan','smallbiz','TrumpPence16','MAGA','CrookedHillary','TrumpPence16','TeamUSA','OpeningCeremony','TeamUSA','Rio2016',
+'OpeningCeremony','Rio2016','TrumpPence16','MAGA','MAGA','TrumpTrain','MAGA','ImWithYou','LESM','MAGA','DemConvention','ImWithHer','TrumpMovement',
+'MAGA','ImWithYou','MAGA','ImWithYou','MAGA','MakeAmericaGreatAgain','ImWithYou','VoterFraud','MSM','MakeAmericaGreatAgain','LESM','DemConvention',
+'DemsInPhilly','TBT','MAGA','NATO','DemsInPhilly','enough','ImWithHer','LGBT','Pulse','DemsinPhilly','DNCinPHL','StrongerTogether','DemsinPhilly',
+'ImWithHer','DemsInPhilly','TrumpPence16','MAGA','TrumpPence16','MAGA','DemsInPhilly','LoveTrumpsHate','ClintonKaine','ImWithHer','RNCinCLE',
+'TrumpIsWithYou','RNCinCLE','MakeAmericaGreatAgain','TrumpIsWithYou','MakeAmericaGreatAgain','NATO','StandTogether','RNCinCLE','TrumpPence2016',
+'AmericaFirst','RNCinCLE','GOPinCLE','GOPConvention','GOPinCLE','AmericaFirst','GOPConvention','AmericaFirst','AmericaFirst','RNCinCLE',
+'AmericaFirst','RNCinCLE','GOPConvention','AmericaFirst','GOPConvention','RNCinCLE','AmericaFirst','RNCinCLE','GOPConvention','RNCinCLE',
+'campaignfinance','CitizensUnited','Trump2016','ImWithYou','ImWithHer','FeelTheBern','CrookedHillary','ImWithYou','Trump2016','ImWithYou',
+'Orlando','StoptheHate','NeverForget','Srebrenica','AmericaFirst','Trump2016','Trump2016','AmericaFirst','Trump2016','AmericaFirst','AmericaFirst',
+'LeadRight2016','ImWithYou','AmericaFirst','ImWithYou','AmericaFirst','ImWithYou','WCS16','ImWithYou','AmericaFirst','CrookedHillary','Trump2016',
+'Trump2016','MAGA','Trump','Clinton','gunviolence','sitin','gunviolence','AsLongAsItTakes','gunviolence','NoBillNoBreak','gunviolence',
+'NoMoreSilence','sitin','AsLongAsItTakes','sitin','NoBillNoBreak','sitin','NoMoreSilence','AsLongAsItTakes','NoBillNoBreak','AsLongAsItTakes',
+'NoMoreSilence','NoBillNoBreak','NoMoreSilence','DisarmHate','sitin','DisarmHate','EndGunViolence','sitin','EndGunViolence','NoBillNoBreak',
+'holdthefloor','NoBillNoBreak','NoMoreSilence','holdthefloor','NoMoreSilence','goodtrouble','NoBillNoBreak','GIBill','veterans','Trump2016',
+'AmericaFirst','Trump2016','AmericaFirst','Trump2016','AmericaFirst','Trump2016','AmericaFirst','AmericaFirst','Trump2016','Trump2016',
+'AmericaFirst','OrlandoUnited','Enough','OrlandoUnited','Filibuster','Enough','Filibuster','AmericaFirst','Trump2016','Trump2016','AmericaFirst',
+'AmericaFirst','TrumpTrain','RTM2016','Trump2016','AmericaFirst','Trump2016','POTUS','Elkhart','POTUS','MakeAmericaGreatAgain','Elkhart',
+'MakeAmericaGreatAgain','VoteTrump2016','TrumpTrain','MakeAmericaGreatAgain','CAPrimary','Women4Ttump','Trump2016','MAGA','TRUMP2016',
+'MakeAmericaGreatAgain','Trump2016','Teachers4Trump','CA4Trump','Teachers4Trump','NeverDems','CA4Trump','NeverDems','MakeAmericaGreatAgain',
+'Trump2016','MakeAmericaGreatAgain','Trump2016','MeetTheTrumps','Trump2016','TrumpTrain','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain',
+'Trump2016','MAGA','MakeAmericaGreatAgain','Trump2016','Trump2016','2A','MichaelBrown','MothersoftheMovement','MichaelBrown','ChangeAgents',
+'MothersoftheMovement','ChangeAgents','SecondAmendment','2A','Trump2016','MakeAmericaGreatAgain','VoteTrump','ORPrimary','MakeAmericaGreatAgain',
+'Trump2016','WashingtonDC','Statehood','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016',
+'MakeAmericaGreatAgain','Trump2016','VoteTrump','MakeAmericaGreatAgain','VoteTrump','Trump2016','MakeAmericaGreatAgain','Trump2016','VoteTrump',
+'MakeAmericaGreatAgain','VoteTrump','Trump2016','MakeAmericaGreatAgain','Trump2016','NebraskaPrimary','Trump2016','NebraskaPrimary',
+'TrumpForPresident','Trump2016','TrumpForPresident','MattSchlapp','jenniferrubin','MattSchlapp','GOP','jenniferrubin','GOP','MakeAmericaGreatAgain',
+'TrumpTrain','Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','INPrimary','VoteTrump','INPrimary','Trump2016','INPrimary',
+'VoteTrump','Trump2016','VoteTrump','Trump2016','VoteTrump','INPrimary','VoteTrump','INPrimary','VoteTrump','VoteTrump','INPrimary','VoteTrump',
+'INPrimary','VoteTrump','MakeAmericaGreatAgain','INPrimary','MakeAmericaGreatAgain','INPrimary','Trump2016','Trump2016','MakeAmericaGreatAgain',
+'Trump2016','INPrimary','Trump2016','MAGA','MakeAmericaGreatAgain','VoteTrump','MakeAmericaGreatAgain','Trump2016','CTPrimary','DEPrimary',
+'CTPrimary','MDPrimary','CTPrimary','PAPrimary','CTPrimary','RIPrimary','DEPrimary','MDPrimary','DEPrimary','PAPrimary','DEPrimary','RIPrimary',
+'MDPrimary','PAPrimary','MDPrimary','RIPrimary','PAPrimary','RIPrimary','PAPrimary','VoteTrump','RIPrimary','VoteTrump','NYPrimary','GOP',
+'Trump2016','MakeAmericaGreatAgain','Trump2016','TrumpTrain','MakeAmericaGreatAgain','TrumpTrain','MakeAmericaGreatAgain','Trump2016',
+'MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','Trump2016','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016',
+'Prince','HillaryClinton','TBT','HillaryOnGMA','Trump2016','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016','TrumpTrain','Trump2016',
+'TrumpTrain','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','NewYorkValues','NYPrimary',
+'NewYorkValues','VoteTrump','NYPrimary','VoteTrump','POTUS','Trump2016','POTUS','VoteTrumpNY','POTUS','PrimaryDay','Trump2016','VoteTrumpNY',
+'Trump2016','PrimaryDay','VoteTrumpNY','PrimaryDay','MakeAmericaGreatAgain','VoteTrump','ICYMI','Trump2016','ICYMI','VoteTrumpNY','Trump2016',
+'VoteTrumpNY','Trump2016','MakeAmericaGreatAgain','iVoted','PrimaryDay','MakeAmericaGreatAgain','Trump2016','NYPrimary','TrumpTrain','VoteTrumpNY',
+'MakeAmericaGreatAgain','Trump2016','presidenttrump','Trump2016','primary','presidenttrump','primary','NYPrimary','Trump2016','NYPrimary','Trump2016',
+'MakeAmericaGreatAgain','Trump2016','Trump2016','TrumpTrain','MakeAmericaGreatAgain','Trump2016','Trump2016','MakeAmericaGreatAgain','Trump2016',
+'NewYorkValues','MakeAmericaGreatAgain','Trump2016','Trump2016','NYPrimary','Trump2016','TrumpTrain','MakeAmericaGreatAgain','Trump2016',
+'MakeAmericaGreatAgain','TrumpTrain','Trump2016','TrumpTrain','MakeAmericaGreatAgain','trump2016','NewDay','MakeAmericaGreatAgain','WIPrimary',
+'Trump2016','WIPrimary','MAGA','Trump2016','MAGA','Wisconsin','MakeAmericaGreatAgain','Wisconsin','TrumpTrain','MakeAmericaGreatAgain','TrumpTrain',
+'WIPrimary','Trump2016','Trump2016','WIPrimary','Trump2016','WIPrimary','VoteTrumpWI','WIPrimary','MakeAmericaGreatAgain','Trump2016','WIPrimary',
+'Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','Trump2016','WIPrimary','MakeAmericaGreatAgain','Trump2016',
+'Racine','Wausau','Racine','EauClaire','Racine','Trump2016','Racine','WIPrimary','Racine','TrumpTrain','Wausau','EauClaire','Wausau','Trump2016',
+'Wausau','WIPrimary','Wausau','TrumpTrain','EauClaire','Trump2016','EauClaire','WIPrimary','EauClaire','TrumpTrain','Trump2016','WIPrimary',
+'Trump2016','TrumpTrain','WIPrimary','TrumpTrain','WIPrimary','Trump2016','WIPrimary','Trump2016','Trump2016','MakeAmericaGreatAgain','VoteTrump',
+'WIPrimary','WIPrimary','Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','WIPrimary','MakeAmericaGreatAgain',
+'LyingTed','NeverCruz','Trump2016','MakeAmericaGreatAgain','Trump2016','TrumpTrain','MakeAmericaGreatAgain','TrumpTrain','Trump2016','WesternTuesday',
+'Trump2016','TrumpTrain','WesternTuesday','TrumpTrain','UtahCaucus','UTCaucus','UtahCaucus','MakeAmericaGreatAgain','UtahCaucus','Trump2016',
+'UTCaucus','MakeAmericaGreatAgain','UTCaucus','Trump2016','MakeAmericaGreatAgain','Trump2016','ArizonaPrimary','AZPrimary','ArizonaPrimary',
+'MakeAmericaGreatAgain','ArizonaPrimary','Trump2016','AZPrimary','MakeAmericaGreatAgain','AZPrimary','Trump2016','MakeAmericaGreatAgain','Trump2016',
+'VoteTrump','AZPrimary','VoteTrump','ArizonaPrimary','VoteTrump','UtahCaucus','VoteTrump','UTCaucus','VoteTrump','AmericanSamoa','AZPrimary',
+'ArizonaPrimary','AZPrimary','UtahCaucus','AZPrimary','UTCaucus','AZPrimary','AmericanSamoa','ArizonaPrimary','UtahCaucus','ArizonaPrimary',
+'UTCaucus','ArizonaPrimary','AmericanSamoa','UtahCaucus','UTCaucus','UtahCaucus','AmericanSamoa','UTCaucus','AmericanSamoa','VoteTrump','AZPrimary',
+'VoteTrump','MakeAmericaGreatAgain','VoteTrump','Trump2016','AZPrimary','MakeAmericaGreatAgain','AZPrimary','Trump2016','MakeAmericaGreatAgain',
+'Trump2016','VoteTrump','MakeAmericaGreatAgain','WattersWorld','Trump2016','VoteTrump','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016',
+'TrumpCountry','Utah','TrumpCountry','Mormon','TrumpCountry','UtahPrimary','TrumpCountry','Utah4Trump','Utah','Mormon','Utah','UtahPrimary','Utah',
+'Utah4Trump','Mormon','UtahPrimary','Mormon','Utah4Trump','UtahPrimary','Utah4Trump','AZ','UT','MakeAmericaGreatAgain','Trump2016','Trump2016',
+'MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016','Trump2016','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016','SuperTuesday',
+'MakeAmericaGreatAgain','SuperTuesday','Trump2016','MakeAmericaGreatAgain','Trump2016','Trump2016','SuperTuesday','Trump2016','MakeAmericaGreatAgain',
+'SuperTuesday','MakeAmericaGreatAgain','SuperTuesday','MakeAmericaGreatAgain','SuperTuesday','Trump2016','MakeAmericaGreatAgain','Trump2016',
+'SuperTuesday','Trump2016','SuperTuesday','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','SuperTuesday','VoteTrump','VoteTrump',
+'SuperTuesday','VoteTrump','Trump2016','VoteTrump','Trump2016','VoteTrump','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','EndCommonCore',
+'Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','VoteTrump','Trump2016','MakeAmericaGreatAgain','Trump2016',
+'Trump2016','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016','TrumpTrain','Trump2016','TrumpWaikiki','Mahalo','Trump2016','SuperSaturday',
+'Trump2016','SuperSaturday','VoteTrump','MakeAmericaGreatAgain','KansasCaucus','MakeAmericaGreatAgain','KansasCaucus','Trump2016',
+'MakeAmericaGreatAgain','Trump2016','VoteTrump','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','VoteTrump',
+'MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016',
+'GOPDebate','TrumpTrain','MakeAmericaGreatAgain','Trump2016','KenLangone','NeilCavuto','KenLangone','Fox','NeilCavuto','Fox','Trump2016',
+'SuperTuesday','Trump2016','SuperTuesday','Trump2016','SuperTuesday','Trump2016','SuperTuesday','Trump2016','SuperTuesday','Trump2016','SuperTuesday',
+'SuperTuesday','Trump2016','VoteTrump','MakeAmericaGreatAgain','VoteTrump','Trump2016','VoteTrump','MakeAmericaGreatAgain','VoteTrump','SuperTuesday',
+'Trump2016','MakeAmericaGreatAgain','Trump2016','SuperTuesday','MakeAmericaGreatAgain','SuperTuesday','SuperTuesday','MakeAmericaGreatAgain','FAIL','Politician','VoteTrump','SuperTuesday','VoteTrump','SuperTuesday','NASCAR','Trump2016','NASCAR','VoteTrump','Trump2016','VoteTrump','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','AlwaysTrump','Trump2016','AlwaysTrump','TrumpTrain','Trump2016','TrumpTrain','StopCommonCore','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016','Trump2016','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016','LoneStarState','SuperTuesday','LoneStarState','MakeAmericaGreatAgain','SuperTuesday','MakeAmericaGreatAgain','GOPDebate','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016','MakeYoutubeGreatAgain','Trump2016','VoteTrump','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','VoteTrumpNV','NevadaCaucus','NevadaCaucus','VoteTrumpNV','NevadaCaucus','VoteTrumpNV','VoteTrumpNV','NevadaCaucus','Trump2016','TrumpNV','trump2016','ICYMI','Hannity','Trump2016','BikersForTrump','VoteTrumpNV','VoteTrumpNV','Trump2016','VoteTrumpNV','Trump2016','SCPrimary','MakeAmericaGreatAgain','ObamaCare','MAKEAMERICAGREATAGAIN','SCPrimary','VoteTrumpSC','SCPrimary','MakeAmericaGreatAgain','VoteTrumpSC','MakeAmericaGreatAgain','VoteTrumpSC','Trump2016','Trump2016','VoteTrumpSC','SCPrimary','Trump2016','SCPrimary','Trump2016','SCPrimary','VoteTrumpSC','SCPrimary','Trump2016','VoteTrumpSC','Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','POTUS','Trump2016','Colbert','LSSC','MakeAmericaGreatAgain','Trump2016','TeamTrump','MaitnerStrong','Trump2016','VoteTrumpSC','Trump','Ford','Trump','Carrier','Trump','Jobs','Trump','Mexico','Ford','Carrier','Ford','Jobs','Ford','Mexico','Carrier','Jobs','Carrier','Mexico','Jobs','Mexico','Trump2016','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016','Trump2016','MakeAmericaGreatAgain','MakeAmericaGreatAgain','SCPrimary','FITN','NHPrimary','FITN','NHPrimary','FITN','VoteTrumpNH','NHPrimary','VoteTrumpNH','VoteTrumpNH','MakeAmericaGreatAgain','VoteTrumpNH','FITN','MakeAmericaGreatAgain','FITN','FITN','NHPrimary','FITN','VoteTrumpNH','NHPrimary','VoteTrumpNH','FITN','VoteTrumpNH','FITN','NHPrimary','GOPDebate','SuperBowlSunday','GOPDebate','SB50','SuperBowlSunday','SB50','FITN','NHPrimary','FITN','VoteTrumpNH','MakeAmericaGreatAgain','TrumpTrain','FITN','NHPrimary','Hannity','MAKEAMERICAGREATAGAIN','NewHampshire','FITN','NewHampshire','VoteTrumpNH','FITN','VoteTrumpNH','FITN','NHPolitics','FITN','Trump2016','NHPolitics','Trump2016','MakeAmericaGreatAgain','VotersSpeak','MakeAmericaGreatAgain','FITN','FITN','Trump2016','CaucusForTrump','IACaucus','IACaucus','CaucusForTrump','IACaucus','CaucusForTrump','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','IACaucus','Trump2016','IACaucus','IACaucus','Trump2016','MakeAmericaGreatAgain','Trump2016','IACaucus','MakeAmericaGreatAgain','IACaucus','GOPDebate','MakeAmericaGreatAgain','GOPDebate','MichaelMoore','FoxNews','MichaelMoore','ROGERAILES','FoxNews','ROGERAILES','Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016','Trump2016','IACaucus','IACaucus','MakeAmericaGreatAgain','MakeAmericaGreatAgain','Trump2016','FITN','Trump2016','VoteTrump','IACaucus','VoteTrump','FITN','VoteTrump','Trump2016','IACaucus','FITN','IACaucus','Trump2016','FITN','Trump2016','NewYork','Jonas','NewYork','NewYorkValues','Jonas','NewYorkValues','IACaucus','Trump2016','IACaucus','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','WeAreBernie','WeWantTrump','WeAreBernie','makeamericagreatagain','WeAreBernie','trump','WeWantTrump','makeamericagreatagain','WeWantTrump','trump','makeamericagreatagain','trump','With_Cruz_you_lose','MakeAmericaGreatAgain','With_Cruz_you_lose','trump2016','MakeAmericaGreatAgain','trump2016','FITN','Trump2016','Trump2016','IACaucus','IACaucus','MakeAmericaGreatAgain','Trump2016','VoteTrump','Trump2016','RNC','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','MaryBrigidMcManamon','CommonLaw','MaryBrigidMcManamon','NaturalBorn','MaryBrigidMcManamon','TedCruz','CommonLaw','NaturalBorn','CommonLaw','TedCruz','NaturalBorn','TedCruz','MaryBrigidMcManamon','Cruz','TedCruz','LaurenceTribe','MakeAmericaGreatAgain','VoteTrump','FITN','IACaucus','FITN','MakeAmericaGreatAgain','FITN','Trump2016','IACaucus','MakeAmericaGreatAgain','IACaucus','Trump2016','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','FITN','Trump2016','FITN','Trump2016','FITN','NHPolitics','Trump2016','NHPolitics','MakeAmericaGreatAgain','Trump2016','Trump2016','MakeAmericaGreatAgain','Trump2016','ECONOMY','MakeAmericaGreatAgain','ECONOMY','MakeAmericaGreatAgain','Trump2016','CBNNews','2016','MakeAmericaGreatAgain','Trump2016','FoxNews','Trump2016','VoteTrump','IowaCaucus','VoteTrump','MakeAmericaGreatAgain','VoteTrump','Trump2016','MakeAmericaGreatAgain','Trump2016','VoteTrump','Trump2016','VoteTrump','IACaucus','VoteTrump','FITN','VoteTrump','IAPolitics','Trump2016','IACaucus','Trump2016','FITN','Trump2016','IAPolitics','IACaucus','FITN','IACaucus','IAPolitics','FITN','IAPolitics','IACaucus','FITN','MakeAmericaGreatAgain','Trump2016','MakeAmericaGreatAgain','Trump2016','LESM','Trump2016','FoxNews','MakeAmericaGreatAgain','FoxNews','Trump2016','MakeAmericaGreatAgain','Trump2016','Rubio','Bush','DavidCameron','WH']
+
+var i,
+    s,
+    N = taglist.length,
+    E = tagpaare.length,
+    g = {
+      nodes: [],
+      edges: []
+    };
+
+//Knoten
+
+
+
+for (i = 0; i < N; i++)
+  g.nodes.push({
+    id: 'n'+i,
+    label: taglist[i],
+    x: Math.random()*800,
+    y: Math.random()*400,
+    size: 0.5,
+    color: '#0B0B61'
+  });
+
+//Kanten
+
+var hilfstag1=" ",
+    hilfstag2=" ",
+    inx1=0,
+    inx2=0;
+i=0;
+
+while (i<E ){
+	hilfstag1=tagpaare[i];
+	hilfstag2=tagpaare[i+1];
+	inx1=taglist.indexOf(hilfstag1);
+	inx2=taglist.indexOf(hilfstag2);
+	if ((inx1!=(-1))&&(inx2!=(-1))) {
+	  g.edges.push({
+    		id: 'e' + i,
+		label: hilfstag1 + "," + hilfstag2,
+    		source: 'n' + (inx1),
+    		target: 'n' + (inx2),
+    		size: 0.2,
+    		color: '#819FF7'
+  		});
+	}
+	i=i+2;
+}
+
+// Instantiate sigma:
+s = new sigma({
+  graph: g,
+  container: 'graph-container'
+});
+</script>
